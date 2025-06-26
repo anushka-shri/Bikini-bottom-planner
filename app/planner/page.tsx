@@ -1,6 +1,7 @@
 "use client"
 import { useState, useMemo } from "react"
 import type React from "react"
+import plannerData from "../../data.json"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardTitle } from "@/components/ui/card"
@@ -61,52 +62,9 @@ interface PlannerItemType {
   documents: DocumentFile[]
 }
 
-const initialItems: PlannerItemType[] = [
-  {
-    id: "1",
-    title: "Flight to Bikini Bottom",
-    type: "travel",
-    status: "booked",
-    date: "2025-07-15",
-    notes: "Morning flight, arrive by noon.",
-    expenses: [{ id: "exp1", description: "Flight tickets", amount: 300 }],
-    placesToGo: [],
-    documents: [{ id: "doc1", name: "flight_confirmation.pdf", type: "pdf" }],
-  },
-  {
-    id: "2",
-    title: "Check into The Krusty Towers",
-    type: "stay",
-    status: "booked",
-    date: "2025-07-15",
-    notes: "Hotel Ocean View, check-in 3 PM.",
-    expenses: [{ id: "exp2", description: "Hotel for 3 nights", amount: 450 }],
-    placesToGo: [],
-    documents: [{ id: "doc2", name: "hotel_booking.pdf", type: "pdf" }],
-  },
-  {
-    id: "3",
-    title: "Jellyfishing in Jellyfish Fields",
-    type: "event",
-    status: "pending",
-    date: "2025-07-16",
-    notes: "Need to rent a high-quality net.",
-    expenses: [{ id: "exp3", description: "Jellyfishing net rental", amount: 25 }],
-    placesToGo: ["Jellyfish Fields"],
-    documents: [],
-  },
-  {
-    id: "4",
-    title: "Dinner at the Krusty Krab",
-    type: "event",
-    status: "pending",
-    date: "2025-07-18",
-    notes: "Try the Krabby Patty!",
-    expenses: [{ id: "exp4", description: "Dinner", amount: 50 }],
-    placesToGo: ["Krusty Krab"],
-    documents: [],
-  },
-]
+interface PlannerData {
+  plannerItems: PlannerItemType[]
+}
 
 function SortablePlannerItem({
   item,
@@ -566,7 +524,7 @@ function StyledExpenseTracker({ items }: { items: PlannerItemType[] }) {
 }
 
 export default function PlannerPage() {
-  const [items, setItems] = useState<PlannerItemType[]>(initialItems)
+  const [items, setItems] = useState<PlannerItemType[]>((plannerData as PlannerData).plannerItems)
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -663,12 +621,12 @@ export default function PlannerPage() {
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold text-white drop-shadow-md">My Itinerary Timeline</h1>
           <div className="flex gap-2">
-            <Button onClick={addNewItem} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2">
+            <Button onClick={addNewItem} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 opacity-85 border border-blue-600">
               <PlusCircle className="mr-2 h-4 w-4" /> Add Item
             </Button>
-            <Button onClick={exportToPDF} variant="outline" className="px-4 py-2">
+            {/* <Button onClick={exportToPDF} variant="outline" className="px-4 py-2">
               <Download className="mr-2 h-4 w-4" /> PDF
-            </Button>
+            </Button> */}
             <Button onClick={exportToWord} variant="outline" className="px-4 py-2">
               <Download className="mr-2 h-4 w-4" /> Word
             </Button>

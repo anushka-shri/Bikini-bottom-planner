@@ -1,0 +1,84 @@
+{
+  "plannerItems": [
+    {
+      "id": "1",
+      "title": "Flight to Bikini Bottom",
+      "type": "travel",
+      "status": "booked",
+      "date": "2025-07-15",
+      "notes": "Morning flight, arrive by noon.",
+      "expenses": [
+        {
+          "id": "exp1",
+          "description": "Flight tickets",
+          "amount": 300
+        }
+      ],
+      "placesToGo": [],
+      "documents": [
+        {
+          "id": "doc1",
+          "name": "flight_confirmation.pdf",
+          "type": "pdf"
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "title": "Check into The Krusty Towers",
+      "type": "stay",
+      "status": "booked",
+      "date": "2025-07-15",
+      "notes": "Hotel Ocean View, check-in 3 PM.",
+      "expenses": [
+        {
+          "id": "exp2",
+          "description": "Hotel for 3 nights",
+          "amount": 450
+        }
+      ],
+      "placesToGo": [],
+      "documents": [
+        {
+          "id": "doc2",
+          "name": "hotel_booking.pdf",
+          "type": "pdf"
+        }
+      ]
+    },
+    {
+      "id": "3",
+      "title": "Jellyfishing in Jellyfish Fields",
+      "type": "event",
+      "status": "pending",
+      "date": "2025-07-16",
+      "notes": "Need to rent a high-quality net.",
+      "expenses": [
+        {
+          "id": "exp3",
+          "description": "Jellyfishing net rental",
+          "amount": 25
+        }
+      ],
+      "placesToGo": ["Jellyfish Fields"],
+      "documents": []
+    },
+    {
+      "id": "4",
+      "title": "Dinner at the Krusty Krab",
+      "type": "event",
+      "status": "pending",
+      "date": "2025-07-18",
+      "notes": "Try the Krabby Patty!",
+      "expenses": [
+        {
+          "id": "exp4",
+          "description": "Dinner",
+          "amount": 50
+        }
+      ],
+      "placesToGo": ["Krusty Krab"],
+      "documents": []
+    }
+  ]
+} 
