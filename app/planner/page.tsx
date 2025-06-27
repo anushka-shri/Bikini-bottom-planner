@@ -270,14 +270,16 @@ function SortablePlannerItem({
         {/* future collapsible content */}
         <CollapsibleContent className="p-4 space-y-4 border-t border-white/20 bg-transparent backdrop-blur-sm rounded-b-md">
           {isEditing ? (
-            <div className="max-w-2xl mx-auto rounded-2xl shadow-2xl p-8 bg-white/95 border border-blue-200">
-              <h3 className="font-bold text-2xl text-blue-900 mb-6 md:col-span-2">Editing: {item.title}</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="w-full max-w-4xl mx-auto rounded-2xl shadow-2xl p-6 bg-gradient-to-br from-white/10 to-transparent border border-blue-200">
+              <h3 className="font-bold text-2xl text-blue-900 mb-6 flex items-center gap-2">
+                <Edit3 className="w-6 h-6 text-blue-400" /> Editing: {item.title}
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div>
                   <Label htmlFor={`title-${item.id}`}>Title</Label>
                   <Input
                     id={`title-${item.id}`}
-                    className="w-full mt-1 focus:ring-2 focus:ring-blue-300"
+                    className="w-full mt-1 focus:ring-2 focus:ring-blue-400 rounded-lg bg-white/80"
                     value={editedItem.title}
                     onChange={(e) => handleInputChange("title", e.target.value)}
                   />
@@ -285,7 +287,7 @@ function SortablePlannerItem({
                 <div>
                   <Label htmlFor={`type-${item.id}`}>Type</Label>
                   <Select value={editedItem.type} onValueChange={(value) => handleInputChange("type", value)}>
-                    <SelectTrigger className="w-full mt-1 focus:ring-2 focus:ring-blue-300">
+                    <SelectTrigger className="w-full mt-1 focus:ring-2 focus:ring-blue-400 rounded-lg bg-white/80">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -301,7 +303,7 @@ function SortablePlannerItem({
                   <Input
                     type="date"
                     id={`date-${item.id}`}
-                    className="w-full mt-1 focus:ring-2 focus:ring-blue-300"
+                    className="w-full mt-1 focus:ring-2 focus:ring-blue-400 rounded-lg bg-white/80"
                     value={editedItem.date || ""}
                     onChange={(e) => handleInputChange("date", e.target.value)}
                   />
@@ -309,7 +311,7 @@ function SortablePlannerItem({
                 <div>
                   <Label htmlFor={`status-${item.id}`}>Status</Label>
                   <Select value={editedItem.status} onValueChange={(value) => handleInputChange("status", value)}>
-                    <SelectTrigger className="w-full mt-1 focus:ring-2 focus:ring-blue-300">
+                    <SelectTrigger className="w-full mt-1 focus:ring-2 focus:ring-blue-400 rounded-lg bg-white/80">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -319,29 +321,33 @@ function SortablePlannerItem({
                   </Select>
                 </div>
                 <div className="md:col-span-2">
-                  <Label htmlFor={`notes-${item.id}`}>Add Places to visit, Important links</Label>
+                  <Label htmlFor={`notes-${item.id}`} className="text-lg font-semibold text-blue-800 flex items-center gap-2 mb-2">
+                    📝 Add Places to visit, Important links
+                  </Label>
                   <Textarea
                     id={`notes-${item.id}`}
-                    className="w-full mt-1 focus:ring-2 focus:ring-blue-300"
+                    className="w-full mt-1 focus:ring-2 focus:ring-blue-400 rounded-lg bg-white/80"
                     value={editedItem.notes || ""}
                     onChange={(e) => handleInputChange("notes", e.target.value)}
                   />
                 </div>
-                <div>
-                  <Label>Expenses</Label>
+                <div className="md:col-span-1">
+                  <Label className="text-lg font-semibold text-blue-800 flex items-center gap-2 mb-2">
+                    💸 Expenses
+                  </Label>
                   <div className="space-y-2">
                     {editedItem.expenses.map((exp, index) => (
                       <div key={exp.id || index} className="flex gap-2 items-center">
                         <Input
                           placeholder="Description"
-                          className="w-full focus:ring-2 focus:ring-blue-300"
+                          className="w-full focus:ring-2 focus:ring-blue-400 rounded-lg bg-white/80"
                           value={exp.description}
                           onChange={(e) => handleExpenseChange(index, "description", e.target.value)}
                         />
                         <Input
                           type="number"
                           placeholder="Amount"
-                          className="w-24 focus:ring-2 focus:ring-blue-300"
+                          className="w-24 focus:ring-2 focus:ring-blue-400 rounded-lg bg-white/80"
                           value={exp.amount}
                           onChange={(e) => handleExpenseChange(index, "amount", e.target.value)}
                         />
@@ -350,15 +356,16 @@ function SortablePlannerItem({
                         </Button>
                       </div>
                     ))}
-                    <Button variant="outline" size="sm" onClick={addExpenseField} className="mt-1">
+                    <Button variant="outline" size="sm" onClick={addExpenseField} className="mt-1 hover:bg-blue-100 rounded-full">
                       <PlusCircle size={16} className="mr-1" /> Add Expense
                     </Button>
                   </div>
                 </div>
-
                 <div className="md:col-span-2">
-                  <Label>Documents</Label>
-                  <div {...getRootProps()} className={`border-2 border-dashed rounded-lg p-4 text-center cursor-pointer transition-colors ${isDragActive ? 'bg-blue-100 border-blue-400' : 'bg-white/70 border-gray-300'}`}>
+                  <Label className="text-lg font-semibold text-blue-800 flex items-center gap-2 mb-2">
+                    📎 Documents
+                  </Label>
+                  <div {...getRootProps()} className={`border-2 border-dashed border-blue-300 rounded-lg p-4 text-center cursor-pointer transition-colors hover:bg-blue-50 ${isDragActive ? 'bg-blue-100 border-blue-400' : 'bg-white/70 border-blue-300'}`}>
                     <input {...getInputProps()} />
                     {isDragActive ? (
                       <p>Drop the files here ...</p>
@@ -379,11 +386,12 @@ function SortablePlannerItem({
                     </ul>
                   )}
                 </div>
-                <div className="flex gap-2 pt-4 md:col-span-2 justify-end">
-                  <Button onClick={saveChanges} className="bg-green-600 hover:bg-green-700 text-white shadow-md rounded-lg px-6 py-2">
+                <hr className="my-4 border-blue-200 md:col-span-3" />
+                <div className="flex gap-2 pt-2 md:col-span-3 justify-end">
+                  <Button onClick={saveChanges} className="bg-green-600 hover:bg-green-700 text-white shadow-md rounded-full px-8 py-2">
                     <Save className="mr-2 h-4 w-4" /> Save
                   </Button>
-                  <Button variant="outline" onClick={cancelEdit} className="shadow-md rounded-lg px-6 py-2">
+                  <Button variant="outline" onClick={cancelEdit} className="shadow-md rounded-full px-8 py-2">
                     <X className="mr-2 h-4 w-4" /> Cancel
                   </Button>
                 </div>
@@ -429,7 +437,7 @@ function SortablePlannerItem({
                   <ul className="list-disc list-inside ml-4 text-gray-700 text-sm">
                     {item.documents.map((doc) => (
                       <li key={doc.id}>
-                        {doc.name} ({doc.type}) <span className="text-xs text-gray-500">(Mock upload)</span>
+                        {doc.name} ({doc.type}) <span className="text-xs text-gray-500"></span>
                       </li>
                     ))}
                   </ul>
@@ -478,17 +486,19 @@ function StyledExpenseTracker({ items }: { items: PlannerItemType[] }) {
 
   return (
     <div
-      className="btn-custom"
+      // className="btn-custom"
       style={{ backgroundColor: "#a5d8ff", padding: "1rem", borderRadius: "1rem", border: "3px solid #1e3a8a" }}
+
+      className="w-full max-w-2xl mx-auto bg-white/90 rounded-2xl shadow-lg border border-blue-200 p-8"
     >
       <Collapsible open={isOpen} onOpenChange={setIsOpen}>
         <CollapsibleTrigger className="w-full cursor-pointer">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
+          <div className="flex items-center justify-between w-full mb-4">
+            <div className="flex items-center gap-3">
               <Calculator className="w-6 h-6 text-blue-800" />
-              <span className="font-bold text-xl text-blue-800">Expense Summary</span>
+              <span className="font-bold text-xl text-blue-800">Expense Tracker</span>
             </div>
-            <div className="flex items-center gap-6 text-sm">
+            <div className="flex items-center gap-10 text-sm">
               <div className="text-center">
                 <p className="text-blue-700 font-semibold">Total</p>
                 <p className="font-bold text-blue-800 text-lg">${expenseData.total.toFixed(2)}</p>
@@ -505,8 +515,9 @@ function StyledExpenseTracker({ items }: { items: PlannerItemType[] }) {
             </div>
           </div>
         </CollapsibleTrigger>
-        <CollapsibleContent className="pt-4 space-y-4">
-          <div className="border-t-2 border-blue-800 pt-4">
+        <CollapsibleContent className="pt-6 space-y-6">
+          <hr className="border-blue-200" />
+          <div>
             <h4 className="font-bold text-blue-800 mb-3 text-lg">📊 Expenses by Category</h4>
             <div className="space-y-2">
               {Object.keys(expenseData.expensesByType).length > 0 ? (
@@ -609,7 +620,7 @@ export default function PlannerPage() {
             <BookOpen className="w-8 h-8 text-yellow-300" />
             Itinerary Timeline
           </h1>
-          
+
           <div className="flex gap-2">
             <Button onClick={addNewItem} className="bg-[#a5d8ff] border-2 border-[#1e3a8a] rounded-xl font-bold text-blue-900 px-5 py-2 hover:bg-blue-200 flex items-center gap-2">
               <PlusCircle className="h-5 w-5" /> Add Item
