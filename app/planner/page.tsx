@@ -479,7 +479,7 @@ function StyledExpenseTracker({ items }: { items: PlannerItemType[] }) {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Calculator className="w-6 h-6 text-blue-800" />
-              <span className="font-bold text-xl text-blue-800">💰 Expense Summary</span>
+              <span className="font-bold text-xl text-blue-800">Expense Summary</span>
             </div>
             <div className="flex items-center gap-6 text-sm">
               <div className="text-center">
@@ -572,24 +572,6 @@ export default function PlannerPage() {
     }
   }
 
-  const exportToPDF = () => {
-    const content = items
-      .map(
-        (item) =>
-          `${item.title} (${item.type}) - ${item.status}\nDate: ${item.date || "Not set"}\nNotes: ${
-            item.notes || "None"
-          }\nExpenses: ${item.expenses.map((exp) => `${exp.description}: $${exp.amount}`).join(", ") || "None"}\n\n`,
-      )
-      .join("")
-
-    const blob = new Blob([`ITINERARY TIMELINE\n\n${content}`], { type: "text/plain" })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement("a")
-    a.href = url
-    a.download = "itinerary.txt"
-    a.click()
-    URL.revokeObjectURL(url)
-  }
 
   const exportToWord = () => {
     const content = items
@@ -624,10 +606,7 @@ export default function PlannerPage() {
             <Button onClick={addNewItem} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 opacity-85 border border-blue-600">
               <PlusCircle className="mr-2 h-4 w-4" /> Add Item
             </Button>
-            {/* <Button onClick={exportToPDF} variant="outline" className="px-4 py-2">
-              <Download className="mr-2 h-4 w-4" /> PDF
-            </Button> */}
-            <Button onClick={exportToWord} variant="outline" className="px-4 py-2">
+                      <Button onClick={exportToWord} variant="outline" className="px-4 py-2">
               <Download className="mr-2 h-4 w-4" /> Word
             </Button>
           </div>
@@ -654,7 +633,9 @@ export default function PlannerPage() {
       </div>
 
       {/* Styled Expense Tracker at Bottom */}
-      <StyledExpenseTracker items={items} />
+      <div className="w-[85%]">
+        <StyledExpenseTracker items={items} />
+      </div>
     </div>
   )
 }

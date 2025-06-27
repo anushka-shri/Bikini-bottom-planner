@@ -240,6 +240,34 @@ export default function UnderwaterBackground() {
           />
         ))}
       </div>
+
+      {/* Watermark: SpongeBob's Pineapple House */}
+      <div className="absolute bottom-0 left-0 z-0 opacity-10 pointer-events-none select-none">
+        <svg width="180" height="220" viewBox="0 0 180 220" fill="none" className="w-44 h-56">
+          {/* Pineapple body */}
+          <ellipse cx="90" cy="140" rx="60" ry="80" fill="#FFB347" stroke="#E59400" strokeWidth="6" />
+          {/* Pineapple texture */}
+          <g stroke="#E59400" strokeWidth="3">
+            <path d="M50 80 Q90 180 130 80" />
+            <path d="M30 120 Q90 200 150 120" />
+            <path d="M60 60 Q90 120 120 60" />
+            <path d="M70 180 Q90 210 110 180" />
+          </g>
+          {/* Door */}
+          <ellipse cx="90" cy="200" rx="18" ry="24" fill="#6EC6CA" stroke="#2A6F77" strokeWidth="4" />
+          {/* Windows */}
+          <ellipse cx="50" cy="140" rx="12" ry="16" fill="#6EC6CA" stroke="#2A6F77" strokeWidth="3" />
+          <ellipse cx="130" cy="140" rx="12" ry="16" fill="#6EC6CA" stroke="#2A6F77" strokeWidth="3" />
+          {/* Leaves */}
+          <g>
+            <path d="M90 60 Q80 30 100 20 Q110 10 120 40" stroke="#4CAF50" strokeWidth="8" fill="none" />
+            <path d="M90 60 Q100 10 80 30 Q70 50 90 60" stroke="#388E3C" strokeWidth="8" fill="none" />
+            <path d="M90 60 Q70 0 110 10 Q130 20 90 60" stroke="#81C784" strokeWidth="6" fill="none" />
+          </g>
+        </svg>
+      </div>
+
+      
     </div>
   )
 }
