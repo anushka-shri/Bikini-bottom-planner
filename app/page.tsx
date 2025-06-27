@@ -34,7 +34,7 @@ export default function HomePage() {
         
         <div className="mt-16 md:mt-24">
           <div className="mx-auto w-[80%]">
-            <div className="rounded-xl bg-white/20 backdrop-blur-sm p-6 border-4 border-sponge-yellow shadow-xl relative">
+            <div className="rounded-xl bg-white/20 backdrop-blur-sm p-8 border-4 border-yellow-100 shadow-xl relative">
               {/* Coral decoration */}
               <div className="absolute -top-10 -right-6 text-4xl animate-float">🐙</div>
               <div className="absolute -bottom-8 -left-6 text-4xl animate-float-slow">🐠</div>

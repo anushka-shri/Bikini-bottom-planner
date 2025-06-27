@@ -46,6 +46,7 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
+import { useDropzone } from 'react-dropzone'
 
 type Expense = { id: string; description: string; amount: number }
 type DocumentFile = { id: string; name: string; type: string }
@@ -189,6 +190,28 @@ function SortablePlannerItem({
     }
   }
 
+  // --- Dropzone for documents ---
+  const onDrop = (acceptedFiles: File[]) => {
+    const newDocs = acceptedFiles.map((file) => ({
+      id: `doc${Date.now()}-${file.name}`,
+      name: file.name,
+      type: file.type || file.name.split('.').pop() || '',
+      file, // keep the file object for future use (e.g., upload)
+    }))
+    setEditedItem((prev) => ({ ...prev, documents: [...prev.documents, ...newDocs] }))
+  }
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: {
+      'application/pdf': ['.pdf'],
+      'application/msword': ['.doc'],
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'],
+      'image/png': ['.png'],
+      'image/jpeg': ['.jpg', '.jpeg'],
+    },
+    multiple: true,
+  })
+
   return (
     <div ref={setNodeRef} style={style} className="relative mb-6">
       <div className="absolute left-0 top-0 bottom-0 w-0.5 timeline-line -translate-x-1/2" />
@@ -244,148 +267,131 @@ function SortablePlannerItem({
             </CollapsibleTrigger>
           </div>
         </div>
-        <CollapsibleContent className="p-4 space-y-4 border-t border-white/20 bg-white/70 backdrop-blur-sm rounded-b-md">
+        {/* future collapsible content */}
+        <CollapsibleContent className="p-4 space-y-4 border-t border-white/20 bg-transparent backdrop-blur-sm rounded-b-md">
           {isEditing ? (
-            <div className="space-y-3">
-              <h3 className="font-bold text-lg text-gray-800">Editing: {item.title}</h3>
-              <div>
-                <Label htmlFor={`title-${item.id}`}>Title</Label>
-                <Input
-                  id={`title-${item.id}`}
-                  value={editedItem.title}
-                  onChange={(e) => handleInputChange("title", e.target.value)}
-                />
-              </div>
-              <div>
-                <Label htmlFor={`type-${item.id}`}>Type</Label>
-                <Select value={editedItem.type} onValueChange={(value) => handleInputChange("type", value)}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="booking">Booking</SelectItem>
-                    <SelectItem value="stay">Stay</SelectItem>
-                    <SelectItem value="travel">Travel Mode</SelectItem>
-                    <SelectItem value="event">Event</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <Label htmlFor={`date-${item.id}`}>Date</Label>
-                <Input
-                  type="date"
-                  id={`date-${item.id}`}
-                  value={editedItem.date || ""}
-                  onChange={(e) => handleInputChange("date", e.target.value)}
-                />
-              </div>
-              <div>
-                <Label htmlFor={`status-${item.id}`}>Status</Label>
-                <Select value={editedItem.status} onValueChange={(value) => handleInputChange("status", value)}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="pending">Pending</SelectItem>
-                    <SelectItem value="booked">Booked</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <Label htmlFor={`notes-${item.id}`}>Notes</Label>
-                <Textarea
-                  id={`notes-${item.id}`}
-                  value={editedItem.notes || ""}
-                  onChange={(e) => handleInputChange("notes", e.target.value)}
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label>Expenses</Label>
-                {editedItem.expenses.map((exp, index) => (
-                  <div key={exp.id || index} className="flex gap-2 items-center">
-                    <Input
-                      placeholder="Description"
-                      value={exp.description}
-                      onChange={(e) => handleExpenseChange(index, "description", e.target.value)}
-                    />
-                    <Input
-                      type="number"
-                      placeholder="Amount"
-                      value={exp.amount}
-                      onChange={(e) => handleExpenseChange(index, "amount", e.target.value)}
-                      className="w-24"
-                    />
-                    <Button variant="ghost" size="icon" onClick={() => removeExpenseField(index)}>
-                      <Trash2 size={16} className="text-red-500" />
+            <div className="max-w-2xl mx-auto rounded-2xl shadow-2xl p-8 bg-white/95 border border-blue-200">
+              <h3 className="font-bold text-2xl text-blue-900 mb-6 md:col-span-2">Editing: {item.title}</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <Label htmlFor={`title-${item.id}`}>Title</Label>
+                  <Input
+                    id={`title-${item.id}`}
+                    className="w-full mt-1 focus:ring-2 focus:ring-blue-300"
+                    value={editedItem.title}
+                    onChange={(e) => handleInputChange("title", e.target.value)}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor={`type-${item.id}`}>Type</Label>
+                  <Select value={editedItem.type} onValueChange={(value) => handleInputChange("type", value)}>
+                    <SelectTrigger className="w-full mt-1 focus:ring-2 focus:ring-blue-300">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="booking">Booking</SelectItem>
+                      <SelectItem value="stay">Stay</SelectItem>
+                      <SelectItem value="travel">Travel Mode</SelectItem>
+                      <SelectItem value="event">Event</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label htmlFor={`date-${item.id}`}>Date</Label>
+                  <Input
+                    type="date"
+                    id={`date-${item.id}`}
+                    className="w-full mt-1 focus:ring-2 focus:ring-blue-300"
+                    value={editedItem.date || ""}
+                    onChange={(e) => handleInputChange("date", e.target.value)}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor={`status-${item.id}`}>Status</Label>
+                  <Select value={editedItem.status} onValueChange={(value) => handleInputChange("status", value)}>
+                    <SelectTrigger className="w-full mt-1 focus:ring-2 focus:ring-blue-300">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="pending">Pending</SelectItem>
+                      <SelectItem value="booked">Booked</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="md:col-span-2">
+                  <Label htmlFor={`notes-${item.id}`}>Add Places to visit, Important links</Label>
+                  <Textarea
+                    id={`notes-${item.id}`}
+                    className="w-full mt-1 focus:ring-2 focus:ring-blue-300"
+                    value={editedItem.notes || ""}
+                    onChange={(e) => handleInputChange("notes", e.target.value)}
+                  />
+                </div>
+                <div>
+                  <Label>Expenses</Label>
+                  <div className="space-y-2">
+                    {editedItem.expenses.map((exp, index) => (
+                      <div key={exp.id || index} className="flex gap-2 items-center">
+                        <Input
+                          placeholder="Description"
+                          className="w-full focus:ring-2 focus:ring-blue-300"
+                          value={exp.description}
+                          onChange={(e) => handleExpenseChange(index, "description", e.target.value)}
+                        />
+                        <Input
+                          type="number"
+                          placeholder="Amount"
+                          className="w-24 focus:ring-2 focus:ring-blue-300"
+                          value={exp.amount}
+                          onChange={(e) => handleExpenseChange(index, "amount", e.target.value)}
+                        />
+                        <Button variant="ghost" size="icon" onClick={() => removeExpenseField(index)}>
+                          <Trash2 size={16} className="text-red-500" />
+                        </Button>
+                      </div>
+                    ))}
+                    <Button variant="outline" size="sm" onClick={addExpenseField} className="mt-1">
+                      <PlusCircle size={16} className="mr-1" /> Add Expense
                     </Button>
                   </div>
-                ))}
-                <Button variant="outline" size="sm" onClick={addExpenseField}>
-                  <PlusCircle size={16} className="mr-1" /> Add Expense
-                </Button>
-              </div>
+                </div>
 
-              <div className="space-y-2">
-                <Label>Places to Go</Label>
-                {editedItem.placesToGo.map((place, index) => (
-                  <div key={index} className="flex gap-2 items-center">
-                    <Input
-                      placeholder="Place name"
-                      value={place}
-                      onChange={(e) => handlePlaceToGoChange(index, e.target.value)}
-                    />
-                    <Button variant="ghost" size="icon" onClick={() => removePlaceToGoField(index)}>
-                      <Trash2 size={16} className="text-red-500" />
-                    </Button>
+                <div className="md:col-span-2">
+                  <Label>Documents</Label>
+                  <div {...getRootProps()} className={`border-2 border-dashed rounded-lg p-4 text-center cursor-pointer transition-colors ${isDragActive ? 'bg-blue-100 border-blue-400' : 'bg-white/70 border-gray-300'}`}>
+                    <input {...getInputProps()} />
+                    {isDragActive ? (
+                      <p>Drop the files here ...</p>
+                    ) : (
+                      <p>Drag & drop PDF, DOC, PNG, or JPEG files here</p>
+                    )}
                   </div>
-                ))}
-                <Button variant="outline" size="sm" onClick={addPlaceToGoField}>
-                  <PlusCircle size={16} className="mr-1" /> Add Place
-                </Button>
-              </div>
-
-              <div className="space-y-2">
-                <Label>Documents</Label>
-                {editedItem.documents.map((doc, index) => (
-                  <div key={doc.id || index} className="flex gap-2 items-center">
-                    <Input
-                      placeholder="Document Name"
-                      value={doc.name}
-                      onChange={(e) => handleDocumentChange(index, "name", e.target.value)}
-                    />
-                    <Input
-                      placeholder="Type (e.g., pdf, jpg)"
-                      value={doc.type}
-                      onChange={(e) => handleDocumentChange(index, "type", e.target.value)}
-                      className="w-28"
-                    />
-                    <Button variant="ghost" size="icon" onClick={() => removeDocumentField(index)}>
-                      <Trash2 size={16} className="text-red-500" />
-                    </Button>
-                  </div>
-                ))}
-                <Button variant="outline" size="sm" onClick={addDocumentField}>
-                  <PlusCircle size={16} className="mr-1" /> Add Document
-                </Button>
-              </div>
-
-              <div className="flex gap-2 pt-2">
-                <Button onClick={saveChanges} className="bg-green-600 hover:bg-green-700 text-white">
-                  <Save className="mr-2 h-4 w-4" /> Save Changes
-                </Button>
-                <Button variant="outline" onClick={cancelEdit}>
-                  <X className="mr-2 h-4 w-4" /> Cancel
-                </Button>
+                  {editedItem.documents.length > 0 && (
+                    <ul className="list-disc list-inside ml-4 text-gray-700 text-sm mt-2">
+                      {editedItem.documents.map((doc, index) => (
+                        <li key={doc.id || index} className="flex items-center gap-2">
+                          <span>{doc.name} ({doc.type})</span>
+                          <Button variant="ghost" size="icon" onClick={() => removeDocumentField(index)}>
+                            <Trash2 size={16} className="text-red-500" />
+                          </Button>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+                <div className="flex gap-2 pt-4 md:col-span-2 justify-end">
+                  <Button onClick={saveChanges} className="bg-green-600 hover:bg-green-700 text-white shadow-md rounded-lg px-6 py-2">
+                    <Save className="mr-2 h-4 w-4" /> Save
+                  </Button>
+                  <Button variant="outline" onClick={cancelEdit} className="shadow-md rounded-lg px-6 py-2">
+                    <X className="mr-2 h-4 w-4" /> Cancel
+                  </Button>
+                </div>
               </div>
             </div>
           ) : (
             <>
-              {item.notes && (
-                <p className="text-gray-700">
-                  <strong className="font-semibold">Notes:</strong> {item.notes}
-                </p>
-              )}
+
               {item.expenses.length > 0 && (
                 <div>
                   <h4 className="font-semibold flex items-center gap-1 text-gray-800 text-sm mb-1">
@@ -432,6 +438,7 @@ function SortablePlannerItem({
             </>
           )}
         </CollapsibleContent>
+
       </Collapsible>
     </div>
   )
@@ -577,12 +584,9 @@ export default function PlannerPage() {
     const content = items
       .map(
         (item) =>
-          `${item.title} (${item.type.toUpperCase()}) - ${item.status.toUpperCase()}\nDate: ${
-            item.date || "Not set"
-          }\nNotes: ${item.notes || "None"}\nExpenses: ${
-            item.expenses.map((exp) => `${exp.description}: $${exp.amount}`).join(", ") || "None"
-          }\nPlaces to Go: ${item.placesToGo.join(", ") || "None"}\nDocuments: ${
-            item.documents.map((doc) => `${doc.name} (${doc.type})`).join(", ") || "None"
+          `${item.title} (${item.type.toUpperCase()}) - ${item.status.toUpperCase()}\nDate: ${item.date || "Not set"
+          }\nNotes: ${item.notes || "None"}\nExpenses: ${item.expenses.map((exp) => `${exp.description}: $${exp.amount}`).join(", ") || "None"
+          }\nPlaces to Go: ${item.placesToGo.join(", ") || "None"}\nDocuments: ${item.documents.map((doc) => `${doc.name} (${doc.type})`).join(", ") || "None"
           }\n\n`,
       )
       .join("")
@@ -601,13 +605,17 @@ export default function PlannerPage() {
       {/* Main Timeline Section */}
       <div className="mb-8">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-white drop-shadow-md">My Itinerary Timeline</h1>
+          <h1 className="text-3xl font-bold text-white drop-shadow-md flex items-center gap-3">
+            <BookOpen className="w-8 h-8 text-yellow-300" />
+            Itinerary Timeline
+          </h1>
+          
           <div className="flex gap-2">
-            <Button onClick={addNewItem} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 opacity-85 border border-blue-600">
-              <PlusCircle className="mr-2 h-4 w-4" /> Add Item
+            <Button onClick={addNewItem} className="bg-[#a5d8ff] border-2 border-[#1e3a8a] rounded-xl font-bold text-blue-900 px-5 py-2 hover:bg-blue-200 flex items-center gap-2">
+              <PlusCircle className="h-5 w-5" /> Add Item
             </Button>
-                      <Button onClick={exportToWord} variant="outline" className="px-4 py-2">
-              <Download className="mr-2 h-4 w-4" /> Word
+            <Button onClick={exportToWord} variant="outline" className="bg-[#a5d8ff] border-2 border-[#1e3a8a] rounded-xl font-bold text-blue-900 px-5 py-2 hover:bg-blue-200 flex items-center gap-2">
+              <Download className="h-5 w-5" /> Download
             </Button>
           </div>
         </div>
