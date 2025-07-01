@@ -2,14 +2,11 @@
 import { useState, useMemo } from "react"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import { Calculator, ChevronDown } from "lucide-react"
-import { PlannerItemType } from "./types"
+import { useAppSelector } from "@/lib/hooks"
 
-interface ExpenseTrackerProps {
-  items: PlannerItemType[]
-}
-
-export function ExpenseTracker({ items }: ExpenseTrackerProps) {
+export function ExpenseTracker() {
   const [isOpen, setIsOpen] = useState(false)
+  const items = useAppSelector((state) => state.planner.items)
 
   const expenseData = useMemo(() => {
     const allExpenses = items.flatMap((item) => item.expenses)

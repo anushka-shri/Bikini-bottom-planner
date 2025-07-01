@@ -1,57 +1,35 @@
 "use client"
-import { useState } from "react"
+import { useEffect } from "react"
 import plannerData from "../../data.json"
 import { 
   PlannerHeader, 
   PlannerTimeline, 
-  ExpenseTracker, 
-  createNewPlannerItem, 
-  exportToWord,
-  type PlannerItemType,
-  type PlannerData 
+  ExpenseTracker
 } from "@/components/planner"
+import { useAppDispatch } from "@/lib/hooks"
+import { setItems } from "@/lib/slices/plannerSlice"
+import type { PlannerData } from "@/components/planner"
 
 export default function PlannerPage() {
-  const [items, setItems] = useState<PlannerItemType[]>((plannerData as PlannerData).plannerItems)
+  const dispatch = useAppDispatch()
 
-  const addNewItem = () => {
-    const newItem = createNewPlannerItem()
-    setItems((prev) => [...prev, newItem])
-  }
-
-  const updateItem = (updatedItem: PlannerItemType) => {
-    setItems((prev) => prev.map((item) => (item.id === updatedItem.id ? updatedItem : item)))
-  }
-
-  const deleteItem = (id: string) => {
-    setItems((prev) => prev.filter((item) => item.id !== id))
-  }
-
-  const handleReorder = (reorderedItems: PlannerItemType[]) => {
-    setItems(reorderedItems)
-  }
-
-  const handleExport = () => {
-    exportToWord(items)
-  }
+  // Initialize data from JSON file
+  useEffect(() => {
+    const data = plannerData as PlannerData
+    dispatch(setItems(data.plannerItems))
+  }, [dispatch])
 
   return (
     <div className="container py-8">
       {/* Main Timeline Section */}
       <div className="mb-8">
-        <PlannerHeader onAddItem={addNewItem} onExport={handleExport} />
-        
-        <PlannerTimeline 
-          items={items} 
-          updateItem={updateItem} 
-          deleteItem={deleteItem} 
-          onReorder={handleReorder}
-        />
+        <PlannerHeader />
+        <PlannerTimeline />
       </div>
 
       {/* Styled Expense Tracker at Bottom */}
       <div className="w-[85%]">
-        <ExpenseTracker items={items} />
+        <ExpenseTracker />
       </div>
     </div>
   )

@@ -16,16 +16,13 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable"
 import { PlannerItem } from "./planner-item"
-import { PlannerItemType } from "./types"
+import { useAppSelector, useAppDispatch } from "@/lib/hooks"
+import { reorderItems } from "@/lib/slices/plannerSlice"
 
-interface PlannerTimelineProps {
-  items: PlannerItemType[]
-  updateItem: (item: PlannerItemType) => void
-  deleteItem: (id: string) => void
-  onReorder: (items: PlannerItemType[]) => void
-}
+export function PlannerTimeline() {
+  const items = useAppSelector((state) => state.planner.items)
+  const dispatch = useAppDispatch()
 
-export function PlannerTimeline({ items, updateItem, deleteItem, onReorder }: PlannerTimelineProps) {
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -44,7 +41,7 @@ export function PlannerTimeline({ items, updateItem, deleteItem, onReorder }: Pl
       const oldIndex = items.findIndex((item) => item.id === active.id)
       const newIndex = items.findIndex((item) => item.id === over.id)
       const reorderedItems = arrayMove(items, oldIndex, newIndex)
-      onReorder(reorderedItems)
+      dispatch(reorderItems(reorderedItems))
     }
   }
 
@@ -64,7 +61,7 @@ export function PlannerTimeline({ items, updateItem, deleteItem, onReorder }: Pl
       <SortableContext items={items.map((item) => item.id)} strategy={verticalListSortingStrategy}>
         <div className="relative pl-4">
           {items.map((item) => (
-            <PlannerItem key={item.id} item={item} updateItem={updateItem} deleteItem={deleteItem} />
+            <PlannerItem key={item.id} item={item} />
           ))}
         </div>
       </SortableContext>

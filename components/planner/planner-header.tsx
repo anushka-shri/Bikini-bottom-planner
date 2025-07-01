@@ -1,13 +1,24 @@
 "use client"
 import { Button } from "@/components/ui/button"
 import { BookOpen, PlusCircle, Download } from "lucide-react"
+import { useAppDispatch } from "@/lib/hooks"
+import { addItem } from "@/lib/slices/plannerSlice"
+import { createNewPlannerItem, exportToWord } from "./planner-utils"
+import { useAppSelector } from "@/lib/hooks"
 
-interface PlannerHeaderProps {
-  onAddItem: () => void
-  onExport: () => void
-}
+export function PlannerHeader() {
+  const dispatch = useAppDispatch()
+  const items = useAppSelector((state) => state.planner.items)
 
-export function PlannerHeader({ onAddItem, onExport }: PlannerHeaderProps) {
+  const handleAddItem = () => {
+    const newItem = createNewPlannerItem()
+    dispatch(addItem(newItem))
+  }
+
+  const handleExport = () => {
+    exportToWord(items)
+  }
+
   return (
     <div className="flex justify-between items-center mb-8">
       <h1 className="text-3xl font-bold text-white drop-shadow-md flex items-center gap-3">
@@ -17,13 +28,13 @@ export function PlannerHeader({ onAddItem, onExport }: PlannerHeaderProps) {
 
       <div className="flex gap-2">
         <Button 
-          onClick={onAddItem} 
+          onClick={handleAddItem} 
           className="bg-[#a5d8ff] border-2 border-[#1e3a8a] rounded-xl font-bold text-blue-900 px-5 py-2 hover:bg-blue-200 flex items-center gap-2"
         >
           <PlusCircle className="h-5 w-5" /> Add Item
         </Button>
         <Button 
-          onClick={onExport} 
+          onClick={handleExport} 
           variant="outline" 
           className="bg-[#a5d8ff] border-2 border-[#1e3a8a] rounded-xl font-bold text-blue-900 px-5 py-2 hover:bg-blue-200 flex items-center gap-2"
         >

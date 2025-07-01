@@ -2,6 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
+import { ReduxProvider } from "@/components/providers/redux-provider"
 import SiteHeader from "@/components/layout/site-header"
 import SiteFooter from "@/components/layout/site-footer"
 import UnderwaterBackground from "@/components/spongebob/underwater-background"
@@ -20,14 +21,16 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`font-sans antialiased text-gray-900`}>
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-          <UnderwaterBackground />
-          <div className="relative z-10 flex min-h-screen flex-col">
-            <SiteHeader />
-            <main className="flex-1">{children}</main>
-            <SiteFooter />
-          </div>
-        </ThemeProvider>
+        <ReduxProvider>
+          <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+            <UnderwaterBackground />
+            <div className="relative z-10 flex min-h-screen flex-col">
+              <SiteHeader />
+              <main className="flex-1">{children}</main>
+              <SiteFooter />
+            </div>
+          </ThemeProvider>
+        </ReduxProvider>
       </body>
     </html>
   )

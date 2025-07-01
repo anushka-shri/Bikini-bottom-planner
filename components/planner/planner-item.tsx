@@ -28,14 +28,15 @@ import { useSortable } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
 import { useDropzone } from 'react-dropzone'
 import { PlannerItemType, Expense, DocumentFile } from "./types"
+import { useAppDispatch } from "@/lib/hooks"
+import { updateItem, deleteItem } from "@/lib/slices/plannerSlice"
 
 interface PlannerItemProps {
   item: PlannerItemType
-  updateItem: (item: PlannerItemType) => void
-  deleteItem: (id: string) => void
 }
 
-export function PlannerItem({ item, updateItem, deleteItem }: PlannerItemProps) {
+export function PlannerItem({ item }: PlannerItemProps) {
+  const dispatch = useAppDispatch()
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: item.id })
 
   const style = {
@@ -102,7 +103,7 @@ export function PlannerItem({ item, updateItem, deleteItem }: PlannerItemProps) 
 
   const saveChanges = (e: React.MouseEvent) => {
     e.stopPropagation()
-    updateItem(editedItem)
+    dispatch(updateItem(editedItem))
     setIsEditing(false)
   }
 
@@ -115,7 +116,7 @@ export function PlannerItem({ item, updateItem, deleteItem }: PlannerItemProps) 
   const handleDelete = (e: React.MouseEvent) => {
     e.stopPropagation()
     if (window.confirm("Are you sure you want to delete this item?")) {
-      deleteItem(item.id)
+      dispatch(deleteItem(item.id))
     }
   }
 
@@ -129,7 +130,7 @@ export function PlannerItem({ item, updateItem, deleteItem }: PlannerItemProps) 
   const toggleStatus = (e: React.MouseEvent) => {
     e.stopPropagation()
     const newStatus = item.status === "pending" ? "booked" : "pending"
-    updateItem({ ...item, status: newStatus })
+    dispatch(updateItem({ ...item, status: newStatus }))
   }
 
   const getStatusIcon = () => {
