@@ -17,7 +17,10 @@ export default function ItinerariesPage() {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
   const [newItinerary, setNewItinerary] = useState({
     title: "",
-    location: ""
+    location: "",
+    budget: "",
+    startDate: "",
+    endDate: ""
   })
 
   const getStatusColor = (status: string) => {
@@ -72,21 +75,21 @@ export default function ItinerariesPage() {
   }
 
   const handleCreateItinerary = () => {
-    if (newItinerary.title.trim() && newItinerary.location.trim()) {
+    if (newItinerary.title.trim() && newItinerary.location.trim() && newItinerary.budget.trim() && newItinerary.startDate && newItinerary.endDate) {
       const newItineraryData: ItineraryType = {
         id: `itinerary-${Date.now()}`,
         name: newItinerary.title,
         description: `A new adventure to ${newItinerary.location}!`,
         destination: newItinerary.location,
-        startDate: new Date().toISOString().split('T')[0],
-        endDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // 7 days from now
-        totalBudget: 0,
+        startDate: newItinerary.startDate,
+        endDate: newItinerary.endDate,
+        totalBudget: parseInt(newItinerary.budget) || 0,
         status: "planning",
         plannerItems: []
       }
 
       setItineraries([...itineraries, newItineraryData])
-      setNewItinerary({ title: "", location: "" })
+      setNewItinerary({ title: "", location: "", budget: "", startDate: "", endDate: "" })
       setIsCreateDialogOpen(false)
     }
   }
@@ -113,50 +116,92 @@ export default function ItinerariesPage() {
         </div>
         <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
           <DialogTrigger asChild>
-            <Button className="bg-sponge-yellow hover:bg-yellow-400 text-black font-bold">
-              <Plus className="w-4 h-4 mr-2" />
-              Create New Itinerary
+            <Button className="bg-[#a5d8ff] border-2 border-[#1e3a8a] rounded-xl font-bold text-blue-900 px-5 py-2 hover:bg-blue-200 flex items-center gap-2">
+              <Plus className="h-5 w-5" /> Create New Itinerary
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-[425px]">
-            <DialogHeader>
-              <DialogTitle>Create New Itinerary</DialogTitle>
-              <DialogDescription>
-                Plan your next underwater adventure! Enter the details below.
+          <DialogContent className="sm:max-w-[450px] bg-white/90 backdrop-blur-sm border border-sponge-blue/50 rounded-lg shadow-lg">
+            <DialogHeader className="text-center pb-4">
+              <DialogTitle className="text-xl font-bold text-sponge-blue">
+                Create New Itinerary
+              </DialogTitle>
+              <DialogDescription className="text-gray-600 text-sm mt-1">
+                Plan your next underwater adventure
               </DialogDescription>
             </DialogHeader>
-            <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="title" className="text-right">
-                  Title
-                </Label>
-                <Input
-                  id="title"
-                  value={newItinerary.title}
-                  onChange={(e) => setNewItinerary({ ...newItinerary, title: e.target.value })}
-                  className="col-span-3"
-                  placeholder="e.g., Bikini Bottom Adventure"
-                />
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="location" className="text-right">
-                  Location
-                </Label>
-                <Input
-                  id="location"
-                  value={newItinerary.location}
-                  onChange={(e) => setNewItinerary({ ...newItinerary, location: e.target.value })}
-                  className="col-span-3"
-                  placeholder="e.g., Goo Lagoon"
-                />
+                          <div className="grid gap-4 py-4">
+                <div className="space-y-1">
+                  <Label htmlFor="title" className="text-sm font-medium text-gray-700">
+                    Title
+                  </Label>
+                  <Input
+                    id="title"
+                    value={newItinerary.title}
+                    onChange={(e) => setNewItinerary({ ...newItinerary, title: e.target.value })}
+                    className="border border-gray-300 focus:border-sponge-blue rounded-md px-3 py-2"
+                    placeholder="e.g., Bikini Bottom Adventure"
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="space-y-1">
+                    <Label htmlFor="location" className="text-sm font-medium text-gray-700">
+                      Location
+                    </Label>
+                    <Input
+                      id="location"
+                      value={newItinerary.location}
+                      onChange={(e) => setNewItinerary({ ...newItinerary, location: e.target.value })}
+                      className="border border-gray-300 focus:border-sponge-blue rounded-md px-3 py-2"
+                      placeholder="e.g., Goo Lagoon"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <Label htmlFor="budget" className="text-sm font-medium text-gray-700">
+                      Budget
+                    </Label>
+                    <Input
+                      id="budget"
+                      type="number"
+                      value={newItinerary.budget}
+                      onChange={(e) => setNewItinerary({ ...newItinerary, budget: e.target.value })}
+                      className="border border-gray-300 focus:border-sponge-blue rounded-md px-3 py-2"
+                      placeholder="e.g., 500"
+                    />
+                  </div>
+                </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <Label htmlFor="startDate" className="text-sm font-medium text-gray-700">
+                    Start Date
+                  </Label>
+                  <Input
+                    id="startDate"
+                    type="date"
+                    value={newItinerary.startDate}
+                    onChange={(e) => setNewItinerary({ ...newItinerary, startDate: e.target.value })}
+                    className="border border-gray-300 focus:border-sponge-blue rounded-md px-3 py-2"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <Label htmlFor="endDate" className="text-sm font-medium text-gray-700">
+                    End Date
+                  </Label>
+                  <Input
+                    id="endDate"
+                    type="date"
+                    value={newItinerary.endDate}
+                    onChange={(e) => setNewItinerary({ ...newItinerary, endDate: e.target.value })}
+                    className="border border-gray-300 focus:border-sponge-blue rounded-md px-3 py-2"
+                  />
+                </div>
               </div>
             </div>
-            <DialogFooter>
+            <DialogFooter className="pt-4">
               <Button 
                 type="submit" 
                 onClick={handleCreateItinerary}
-                className="bg-sponge-blue hover:bg-blue-600 text-white"
-                disabled={!newItinerary.title.trim() || !newItinerary.location.trim()}
+                className="bg-sponge-blue hover:bg-blue-600 text-white px-4 py-2 rounded-md"
+                disabled={!newItinerary.title.trim() || !newItinerary.location.trim() || !newItinerary.budget.trim() || !newItinerary.startDate || !newItinerary.endDate}
               >
                 Create Itinerary
               </Button>
@@ -167,7 +212,7 @@ export default function ItinerariesPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {itineraries.map((itinerary) => (
-                      <Card key={itinerary.id} className="bg-white/80 backdrop-blur-sm border-2 border-sponge-blue hover:border-yellow-400 hover:shadow-lg transition-shadow duration-200 cursor-pointer shadow-xl">
+                      <Card key={itinerary.id} className="bg-white/80 backdrop-blur-sm border-2 border-sponge-blue hover:border-yellow-400 hover:shadow-lg transition-shadow duration-200 cursor-pointer shadow-xl rounded-2xl">
               <CardHeader className="pb-3">
                 <div className="flex justify-between items-start">
                   <Link href={`/planner/${itinerary.id}`} className="flex-1">
@@ -227,50 +272,92 @@ export default function ItinerariesPage() {
           <p className="text-gray-600 mb-6">Start planning your first underwater adventure!</p>
           <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
             <DialogTrigger asChild>
-              <Button className="bg-sponge-yellow hover:bg-yellow-400 text-black font-bold">
-                <Plus className="w-4 h-4 mr-2" />
-                Create Your First Itinerary
+              <Button className="bg-[#a5d8ff] border-2 border-[#1e3a8a] rounded-xl font-bold text-blue-900 px-5 py-2 hover:bg-blue-200 flex items-center gap-2">
+                <Plus className="h-5 w-5" /> Create Your First Itinerary
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle>Create New Itinerary</DialogTitle>
-                <DialogDescription>
-                  Plan your next underwater adventure! Enter the details below.
+            <DialogContent className="sm:max-w-[450px] bg-white/90 backdrop-blur-sm border border-sponge-blue/50 rounded-lg shadow-lg">
+              <DialogHeader className="text-center pb-4">
+                <DialogTitle className="text-xl font-bold text-sponge-blue">
+                  Create New Itinerary
+                </DialogTitle>
+                <DialogDescription className="text-gray-600 text-sm mt-1">
+                  Plan your next underwater adventure
                 </DialogDescription>
               </DialogHeader>
               <div className="grid gap-4 py-4">
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="title" className="text-right">
+                <div className="space-y-1">
+                  <Label htmlFor="title" className="text-sm font-medium text-gray-700">
                     Title
                   </Label>
                   <Input
                     id="title"
                     value={newItinerary.title}
                     onChange={(e) => setNewItinerary({ ...newItinerary, title: e.target.value })}
-                    className="col-span-3"
+                    className="border border-gray-300 focus:border-sponge-blue rounded-md px-3 py-2"
                     placeholder="e.g., Bikini Bottom Adventure"
                   />
                 </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="location" className="text-right">
-                    Location
-                  </Label>
-                  <Input
-                    id="location"
-                    value={newItinerary.location}
-                    onChange={(e) => setNewItinerary({ ...newItinerary, location: e.target.value })}
-                    className="col-span-3"
-                    placeholder="e.g., Goo Lagoon"
-                  />
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="space-y-1">
+                    <Label htmlFor="location" className="text-sm font-medium text-gray-700">
+                      Location
+                    </Label>
+                    <Input
+                      id="location"
+                      value={newItinerary.location}
+                      onChange={(e) => setNewItinerary({ ...newItinerary, location: e.target.value })}
+                      className="border border-gray-300 focus:border-sponge-blue rounded-md px-3 py-2"
+                      placeholder="e.g., Goo Lagoon"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <Label htmlFor="budget" className="text-sm font-medium text-gray-700">
+                      Budget
+                    </Label>
+                    <Input
+                      id="budget"
+                      type="number"
+                      value={newItinerary.budget}
+                      onChange={(e) => setNewItinerary({ ...newItinerary, budget: e.target.value })}
+                      className="border border-gray-300 focus:border-sponge-blue rounded-md px-3 py-2"
+                      placeholder="e.g., 500"
+                    />
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="space-y-1">
+                    <Label htmlFor="startDate" className="text-sm font-medium text-gray-700">
+                      Start Date
+                    </Label>
+                    <Input
+                      id="startDate"
+                      type="date"
+                      value={newItinerary.startDate}
+                      onChange={(e) => setNewItinerary({ ...newItinerary, startDate: e.target.value })}
+                      className="border border-gray-300 focus:border-sponge-blue rounded-md px-3 py-2"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <Label htmlFor="endDate" className="text-sm font-medium text-gray-700">
+                      End Date
+                    </Label>
+                    <Input
+                      id="endDate"
+                      type="date"
+                      value={newItinerary.endDate}
+                      onChange={(e) => setNewItinerary({ ...newItinerary, endDate: e.target.value })}
+                      className="border border-gray-300 focus:border-sponge-blue rounded-md px-3 py-2"
+                    />
+                  </div>
                 </div>
               </div>
-              <DialogFooter>
+              <DialogFooter className="pt-4">
                 <Button 
                   type="submit" 
                   onClick={handleCreateItinerary}
-                  className="bg-sponge-blue hover:bg-blue-600 text-white"
-                  disabled={!newItinerary.title.trim() || !newItinerary.location.trim()}
+                  className="bg-sponge-blue hover:bg-blue-600 text-white px-4 py-2 rounded-md"
+                  disabled={!newItinerary.title.trim() || !newItinerary.location.trim() || !newItinerary.budget.trim() || !newItinerary.startDate || !newItinerary.endDate}
                 >
                   Create Itinerary
                 </Button>

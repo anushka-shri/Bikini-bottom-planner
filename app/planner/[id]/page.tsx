@@ -55,12 +55,10 @@ export default function PlannerPage() {
       {/* Back Button */}
       <div className="mb-6">
         <Button 
-          variant="outline" 
           onClick={() => router.push('/itineraries')}
-          className="flex items-center gap-2"
+          className="bg-[#a5d8ff] border-2 border-[#1e3a8a] rounded-xl font-bold text-blue-900 px-5 py-2 hover:bg-blue-200 flex items-center gap-2"
         >
-          <ArrowLeft className="w-4 h-4" />
-          Back to Itineraries
+          <ArrowLeft className="h-5 w-5" /> Back to Itineraries
         </Button>
       </div>
 
