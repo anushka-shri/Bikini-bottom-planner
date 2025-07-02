@@ -1,84 +1,200 @@
 {
-  "plannerItems": [
+  "itineraries": [
     {
-      "id": "1",
-      "title": "Flight to Bikini Bottom",
-      "type": "travel",
-      "status": "booked",
-      "date": "2025-07-15",
-      "notes": "Morning flight, arrive by noon.",
-      "expenses": [
+      "id": "itinerary-1",
+      "name": "Bikini Bottom Adventure",
+      "description": "A fun-filled trip to the underwater city with jellyfishing and Krabby Patties!",
+      "destination": "Bikini Bottom",
+      "startDate": "2025-07-15",
+      "endDate": "2025-07-18",
+      "totalBudget": 825,
+      "status": "active",
+      "plannerItems": [
         {
-          "id": "exp1",
-          "description": "Flight tickets",
-          "amount": 300
-        }
-      ],
-      "placesToGo": [],
-      "documents": [
+          "id": "1",
+          "title": "Flight to Bikini Bottom",
+          "type": "travel",
+          "status": "booked",
+          "date": "2025-07-15",
+          "notes": "Morning flight, arrive by noon.",
+          "expenses": [
+            {
+              "id": "exp1",
+              "description": "Flight tickets",
+              "amount": 300
+            }
+          ],
+          "placesToGo": [],
+          "documents": [
+            {
+              "id": "doc1",
+              "name": "flight_confirmation.pdf",
+              "type": "pdf"
+            }
+          ]
+        },
         {
-          "id": "doc1",
-          "name": "flight_confirmation.pdf",
-          "type": "pdf"
+          "id": "2",
+          "title": "Check into The Krusty Towers",
+          "type": "stay",
+          "status": "booked",
+          "date": "2025-07-15",
+          "notes": "Hotel Ocean View, check-in 3 PM.",
+          "expenses": [
+            {
+              "id": "exp2",
+              "description": "Hotel for 3 nights",
+              "amount": 450
+            }
+          ],
+          "placesToGo": [],
+          "documents": [
+            {
+              "id": "doc2",
+              "name": "hotel_booking.pdf",
+              "type": "pdf"
+            }
+          ]
+        },
+        {
+          "id": "3",
+          "title": "Jellyfishing in Jellyfish Fields",
+          "type": "event",
+          "status": "pending",
+          "date": "2025-07-16",
+          "notes": "Need to rent a high-quality net.",
+          "expenses": [
+            {
+              "id": "exp3",
+              "description": "Jellyfishing net rental",
+              "amount": 25
+            }
+          ],
+          "placesToGo": ["Jellyfish Fields"],
+          "documents": []
+        },
+        {
+          "id": "4",
+          "title": "Dinner at the Krusty Krab",
+          "type": "event",
+          "status": "pending",
+          "date": "2025-07-18",
+          "notes": "Try the Krabby Patty!",
+          "expenses": [
+            {
+              "id": "exp4",
+              "description": "Dinner",
+              "amount": 50
+            }
+          ],
+          "placesToGo": ["Krusty Krab"],
+          "documents": []
         }
       ]
     },
     {
-      "id": "2",
-      "title": "Check into The Krusty Towers",
-      "type": "stay",
-      "status": "booked",
-      "date": "2025-07-15",
-      "notes": "Hotel Ocean View, check-in 3 PM.",
-      "expenses": [
+      "id": "itinerary-2",
+      "name": "Goo Lagoon Beach Day",
+      "description": "A relaxing day at the beach with sandcastle building and beach volleyball!",
+      "destination": "Goo Lagoon",
+      "startDate": "2025-08-10",
+      "endDate": "2025-08-10",
+      "totalBudget": 150,
+      "status": "planning",
+      "plannerItems": [
         {
-          "id": "exp2",
-          "description": "Hotel for 3 nights",
-          "amount": 450
-        }
-      ],
-      "placesToGo": [],
-      "documents": [
+          "id": "1",
+          "title": "Beach Equipment Rental",
+          "type": "event",
+          "status": "pending",
+          "date": "2025-08-10",
+          "notes": "Umbrella, chairs, and volleyball net.",
+          "expenses": [
+            {
+              "id": "exp1",
+              "description": "Beach equipment",
+              "amount": 75
+            }
+          ],
+          "placesToGo": ["Goo Lagoon Beach"],
+          "documents": []
+        },
         {
-          "id": "doc2",
-          "name": "hotel_booking.pdf",
-          "type": "pdf"
+          "id": "2",
+          "title": "Lunch at Beach Shack",
+          "type": "event",
+          "status": "pending",
+          "date": "2025-08-10",
+          "notes": "Fresh seafood and tropical drinks!",
+          "expenses": [
+            {
+              "id": "exp2",
+              "description": "Lunch and drinks",
+              "amount": 75
+            }
+          ],
+          "placesToGo": ["Beach Shack"],
+          "documents": []
         }
       ]
     },
     {
-      "id": "3",
-      "title": "Jellyfishing in Jellyfish Fields",
-      "type": "event",
-      "status": "pending",
-      "date": "2025-07-16",
-      "notes": "Need to rent a high-quality net.",
-      "expenses": [
+      "id": "itinerary-3",
+      "name": "Rock Bottom Exploration",
+      "description": "An adventurous trip to the mysterious Rock Bottom with cave exploring!",
+      "destination": "Rock Bottom",
+      "startDate": "2025-09-20",
+      "endDate": "2025-09-22",
+      "totalBudget": 600,
+      "status": "completed",
+      "plannerItems": [
         {
-          "id": "exp3",
-          "description": "Jellyfishing net rental",
-          "amount": 25
-        }
-      ],
-      "placesToGo": ["Jellyfish Fields"],
-      "documents": []
-    },
-    {
-      "id": "4",
-      "title": "Dinner at the Krusty Krab",
-      "type": "event",
-      "status": "pending",
-      "date": "2025-07-18",
-      "notes": "Try the Krabby Patty!",
-      "expenses": [
+          "id": "1",
+          "title": "Bus to Rock Bottom",
+          "type": "travel",
+          "status": "booked",
+          "date": "2025-09-20",
+          "notes": "Early morning departure.",
+          "expenses": [
+            {
+              "id": "exp1",
+              "description": "Bus tickets",
+              "amount": 100
+            }
+          ],
+          "placesToGo": [],
+          "documents": [
+            {
+              "id": "doc1",
+              "name": "bus_tickets.pdf",
+              "type": "pdf"
+            }
+          ]
+        },
         {
-          "id": "exp4",
-          "description": "Dinner",
-          "amount": 50
+          "id": "2",
+          "title": "Cave Exploration Tour",
+          "type": "event",
+          "status": "booked",
+          "date": "2025-09-21",
+          "notes": "Guided tour with safety equipment.",
+          "expenses": [
+            {
+              "id": "exp2",
+              "description": "Tour guide and equipment",
+              "amount": 200
+            }
+          ],
+          "placesToGo": ["Rock Bottom Caves"],
+          "documents": [
+            {
+              "id": "doc2",
+              "name": "tour_confirmation.pdf",
+              "type": "pdf"
+            }
+          ]
         }
-      ],
-      "placesToGo": ["Krusty Krab"],
-      "documents": []
+      ]
     }
   ]
 } 

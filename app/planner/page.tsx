@@ -1,35 +1,20 @@
 "use client"
 import { useEffect } from "react"
-import plannerData from "../../data.json"
-import { 
-  PlannerHeader, 
-  PlannerTimeline, 
-  ExpenseTracker
-} from "@/components/planner"
-import { useAppDispatch } from "@/lib/hooks"
-import { setItems } from "@/lib/slices/plannerSlice"
-import type { PlannerData } from "@/components/planner"
+import { useRouter } from "next/navigation"
 
 export default function PlannerPage() {
-  const dispatch = useAppDispatch()
+  const router = useRouter()
 
-  // Initialize data from JSON file
   useEffect(() => {
-    const data = plannerData as PlannerData
-    dispatch(setItems(data.plannerItems))
-  }, [dispatch])
+    // Redirect to itineraries page
+    router.push('/itineraries')
+  }, [router])
 
   return (
     <div className="container py-8">
-      {/* Main Timeline Section */}
-      <div className="mb-8">
-        <PlannerHeader />
-        <PlannerTimeline />
-      </div>
-
-      {/* Styled Expense Tracker at Bottom */}
-      <div className="w-[85%]">
-        <ExpenseTracker />
+      <div className="text-center">
+        <div className="text-4xl mb-4">🧽</div>
+        <p>Redirecting to your itineraries...</p>
       </div>
     </div>
   )

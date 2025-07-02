@@ -2,7 +2,7 @@ export default function UnderwaterBackground() {
   return (
     <div className="fixed inset-0 z-0 overflow-hidden">
       {/* Main underwater gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-teal-300 via-blue-500 to-purple-400" />
+      <div className="absolute inset-0 bg-gradient-to-b from-teal-300 via-blue-500 to-purple-300" />
 
       {/* Floating Jellyfish */}
       <div className="floating-jellyfish jellyfish-1 absolute top-1/5 left-1/5 w-12 h-16 opacity-70">

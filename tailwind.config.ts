@@ -56,6 +56,12 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        // SpongeBob theme colors
+        "sponge-yellow": "#FFFF31",
+        "sponge-blue": "#0099cc",
+        "sponge-pink": "#FF69B4",
+        "sponge-green": "#00FF7F",
+        "sponge-orange": "#FFA500",
       },
       borderRadius: {
         lg: "var(--radius)",

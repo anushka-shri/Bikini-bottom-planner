@@ -22,7 +22,7 @@ export default function HomePage() {
       </p>
 
       <div className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6 mb-16 sm:mb-20 md:mb-24">
-        <Link href="/planner" className="btn-custom btn-planner">
+        <Link href="/itineraries" className="btn-custom btn-planner">
           <span>📝</span> Plan Your Itinerary
         </Link>
         <Link href="/vacation-finder" className="btn-custom btn-finder">

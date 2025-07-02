@@ -13,6 +13,22 @@ export interface PlannerItemType {
   documents: DocumentFile[]
 }
 
+export interface ItineraryType {
+  id: string
+  name: string
+  description: string
+  destination: string
+  startDate: string
+  endDate: string
+  totalBudget: number
+  status: "planning" | "active" | "completed"
+  plannerItems: PlannerItemType[]
+}
+
 export interface PlannerData {
   plannerItems: PlannerItemType[]
+}
+
+export interface ItinerariesData {
+  itineraries: ItineraryType[]
 } 
