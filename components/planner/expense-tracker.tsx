@@ -46,43 +46,43 @@ export function ExpenseTracker() {
         <CollapsibleTrigger className="w-full cursor-pointer">
           <div className="flex items-center justify-between w-full mb-4">
             <div className="flex items-center gap-3">
-              <Calculator className="w-6 h-6 text-blue-800" />
-              <span className="font-bold text-xl text-blue-800">Expense Tracker</span>
+              <Calculator className="w-6 h-6 text-[#1e3a8a]" />
+              <span className="font-bold text-xl text-[#1e3a8a]">Expense Tracker</span>
             </div>
-            <div className="flex items-center gap-10 text-sm">
+            <div className="flex items-center gap-6 text-sm">
               <div className="text-center">
-                <p className="text-blue-700 font-semibold">Total</p>
-                <p className="font-bold text-blue-800 text-lg">${expenseData.total.toFixed(2)}</p>
+                <p className="text-[#1e3a8a] font-semibold text-xs">Total</p>
+                <p className="font-bold text-[#1e3a8a] text-lg">${expenseData.total.toFixed(2)}</p>
               </div>
               <div className="text-center">
-                <p className="text-blue-700 font-semibold">Booked</p>
+                <p className="text-[#1e3a8a] font-semibold text-xs">Booked</p>
                 <p className="font-bold text-green-700 text-lg">${expenseData.booked.toFixed(2)}</p>
               </div>
               <div className="text-center">
-                <p className="text-blue-700 font-semibold">Pending</p>
+                <p className="text-[#1e3a8a] font-semibold text-xs">Pending</p>
                 <p className="font-bold text-yellow-700 text-lg">${expenseData.pending.toFixed(2)}</p>
               </div>
-              <ChevronDown className="w-6 h-6 text-blue-800 transition-transform duration-300 data-[state=open]:rotate-180" />
+              <ChevronDown className="w-6 h-6 text-[#1e3a8a] transition-transform duration-300 data-[state=open]:rotate-180" />
             </div>
           </div>
         </CollapsibleTrigger>
         <CollapsibleContent className="pt-6 space-y-6">
-          <hr className="border-blue-200" />
+          <hr className="border-[#1e3a8a]/30" />
           <div>
-            <h4 className="font-bold text-blue-800 mb-3 text-lg">📊 Expenses by Category</h4>
+            <h4 className="font-bold text-[#1e3a8a] mb-3 text-lg">📊 Expenses by Category</h4>
             <div className="space-y-2">
               {Object.keys(expenseData.expensesByType).length > 0 ? (
                 Object.entries(expenseData.expensesByType).map(([type, amount]) => (
                   <div
                     key={type}
-                    className="flex justify-between items-center p-3 bg-white/50 rounded-lg border-2 border-blue-600"
+                    className="flex justify-between items-center p-3 bg-white/60 rounded-lg border-2 border-[#1e3a8a]/50"
                   >
-                    <span className="capitalize text-blue-800 font-semibold text-lg">{type}</span>
-                    <span className="font-bold text-blue-800 text-lg">${amount.toFixed(2)}</span>
+                    <span className="capitalize text-[#1e3a8a] font-semibold text-lg">{type}</span>
+                    <span className="font-bold text-[#1e3a8a] text-lg">${amount.toFixed(2)}</span>
                   </div>
                 ))
               ) : (
-                <p className="text-blue-700 text-center py-4 font-semibold">No expenses categorized yet.</p>
+                <p className="text-[#1e3a8a] text-center py-4 font-semibold">No expenses categorized yet.</p>
               )}
             </div>
           </div>

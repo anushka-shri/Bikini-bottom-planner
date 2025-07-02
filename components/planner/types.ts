@@ -31,4 +31,9 @@ export interface PlannerData {
 
 export interface ItinerariesData {
   itineraries: ItineraryType[]
+}
+
+export interface StickyNote {
+  id: string
+  text: string
 } 

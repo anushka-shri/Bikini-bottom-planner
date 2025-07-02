@@ -1,5 +1,5 @@
 "use client"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -8,12 +8,14 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Plus, Calendar, MapPin, DollarSign } from "lucide-react"
+import { useAppDispatch, useAppSelector } from "@/lib/hooks"
+import { setItineraries, addItinerary, updateItinerary } from "@/lib/slices/plannerSlice"
 import itinerariesData from "../../data.json"
 import type { ItinerariesData, ItineraryType } from "@/components/planner"
 
 export default function ItinerariesPage() {
-  const data = itinerariesData as ItinerariesData
-  const [itineraries, setItineraries] = useState<ItineraryType[]>(data.itineraries)
+  const dispatch = useAppDispatch()
+  const itineraries = useAppSelector((state) => state.planner.itineraries)
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
   const [newItinerary, setNewItinerary] = useState({
     title: "",
@@ -22,6 +24,14 @@ export default function ItinerariesPage() {
     startDate: "",
     endDate: ""
   })
+
+  // Initialize itineraries from data.json on component mount
+  useEffect(() => {
+    const data = itinerariesData as ItinerariesData
+    if (itineraries.length === 0) {
+      dispatch(setItineraries(data.itineraries))
+    }
+  }, [dispatch, itineraries.length])
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -50,20 +60,17 @@ export default function ItinerariesPage() {
   }
 
   const toggleStatus = (itineraryId: string) => {
-    setItineraries(prevItineraries => 
-      prevItineraries.map(itinerary => {
-        if (itinerary.id === itineraryId) {
-          const statusOrder = ["planning", "active", "completed"]
-          const currentIndex = statusOrder.indexOf(itinerary.status)
-          const nextIndex = (currentIndex + 1) % statusOrder.length
-          return {
-            ...itinerary,
-            status: statusOrder[nextIndex] as "planning" | "active" | "completed"
-          }
-        }
-        return itinerary
-      })
-    )
+    const itinerary = itineraries.find(it => it.id === itineraryId)
+    if (itinerary) {
+      const statusOrder = ["planning", "active", "completed"]
+      const currentIndex = statusOrder.indexOf(itinerary.status)
+      const nextIndex = (currentIndex + 1) % statusOrder.length
+      const updatedItinerary = {
+        ...itinerary,
+        status: statusOrder[nextIndex] as "planning" | "active" | "completed"
+      }
+      dispatch(updateItinerary(updatedItinerary))
+    }
   }
 
   const formatDate = (dateString: string) => {
@@ -88,7 +95,7 @@ export default function ItinerariesPage() {
         plannerItems: []
       }
 
-      setItineraries([...itineraries, newItineraryData])
+      dispatch(addItinerary(newItineraryData))
       setNewItinerary({ title: "", location: "", budget: "", startDate: "", endDate: "" })
       setIsCreateDialogOpen(false)
     }
@@ -98,8 +105,8 @@ export default function ItinerariesPage() {
 
   return (
     <div className="container py-8">
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-2" style={{
+      <div className="mb-8 flex justify-between items-center">
+        <h1 className="text-4xl font-bold" style={{
           fontFamily: "'Luckiest Guy', 'Comic Sans MS', cursive, sans-serif",
           color: '#FFFF31',
           WebkitTextStroke: '1px #0099cc',
@@ -107,17 +114,10 @@ export default function ItinerariesPage() {
         }}>
           Your Itineraries
         </h1>
-        <p className="text-lg text-gray-600">Plan and manage your underwater adventures!</p>
-      </div>
-
-      <div className="mb-6 flex justify-between items-center">
-        <div className="text-sm text-gray-500">
-          {itineraries.length} itinerary{itineraries.length !== 1 ? 's' : ''} found
-        </div>
         <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
           <DialogTrigger asChild>
             <Button className="bg-[#a5d8ff] border-2 border-[#1e3a8a] rounded-xl font-bold text-blue-900 px-5 py-2 hover:bg-blue-200 flex items-center gap-2">
-              <Plus className="h-5 w-5" /> Create New Itinerary
+              <Plus className="h-5 w-5" /> Create New 
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[450px] bg-white/90 backdrop-blur-sm border border-sponge-blue/50 rounded-lg shadow-lg">
@@ -208,6 +208,12 @@ export default function ItinerariesPage() {
             </DialogFooter>
           </DialogContent>
         </Dialog>
+      </div>
+
+      <div className="mb-6">
+        <div className="text-sm text-gray-500">
+          {itineraries.length} itinerary{itineraries.length !== 1 ? 's' : ''} found
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
