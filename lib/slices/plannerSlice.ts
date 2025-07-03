@@ -4,7 +4,22 @@ import { PlannerItemType, ItineraryType } from '@/components/planner/types'
 interface StickyNote {
   id: string
   text: string
+  position?: { x: number; y: number }
+  zIndex?: number
+  color?: string
 }
+
+// Available colors for sticky notes
+const stickyNoteColors = [
+  'yellow',
+  'pink',
+  'blue',
+  'green',
+  'orange',
+  'purple',
+  'red',
+  'teal'
+]
 
 interface PlannerState {
   items: PlannerItemType[]
@@ -17,10 +32,10 @@ interface PlannerState {
 const initialState: PlannerState = {
   items: [],
   stickyNotes: [
-    { id: '1', text: 'Remember to pack your jellyfishing net!' },
-    { id: '2', text: 'Book Krusty Krab reservation in advance' },
-    { id: '3', text: 'Don\'t forget to bring extra change for the bus' },
-    { id: '4', text: 'Check weather forecast for jellyfishing day' }
+    { id: '1', text: 'Remember to pack your jellyfishing net!', position: { x: 50, y: 50 }, zIndex: 1, color: 'yellow' },
+    { id: '2', text: 'Book Krusty Krab reservation in advance', position: { x: 200, y: 100 }, zIndex: 2, color: 'pink' },
+    { id: '3', text: 'Don\'t forget to bring extra change for the bus', position: { x: 350, y: 150 }, zIndex: 3, color: 'blue' },
+    { id: '4', text: 'Check weather forecast for jellyfishing day', position: { x: 500, y: 200 }, zIndex: 4, color: 'green' }
   ],
   itineraries: [],
   loading: false,
@@ -57,12 +72,33 @@ const plannerSlice = createSlice({
     },
     // Sticky Notes reducers
     addStickyNote: (state, action: PayloadAction<StickyNote>) => {
-      state.stickyNotes.push(action.payload)
+      const randomColor = stickyNoteColors[Math.floor(Math.random() * stickyNoteColors.length)]
+      const newNote = {
+        ...action.payload,
+        position: action.payload.position || { x: Math.random() * 300, y: Math.random() * 200 },
+        zIndex: action.payload.zIndex || Math.max(...state.stickyNotes.map(note => note.zIndex || 0), 0) + 1,
+        color: action.payload.color || randomColor,
+        text: action.payload.text || ""
+      }
+      state.stickyNotes.push(newNote)
     },
     updateStickyNote: (state, action: PayloadAction<StickyNote>) => {
       const index = state.stickyNotes.findIndex(note => note.id === action.payload.id)
       if (index !== -1) {
         state.stickyNotes[index] = action.payload
+      }
+    },
+    updateStickyNotePosition: (state, action: PayloadAction<{ id: string; position: { x: number; y: number }; zIndex: number }>) => {
+      const index = state.stickyNotes.findIndex(note => note.id === action.payload.id)
+      if (index !== -1) {
+        state.stickyNotes[index].position = action.payload.position
+        state.stickyNotes[index].zIndex = action.payload.zIndex
+      }
+    },
+    updateStickyNoteColor: (state, action: PayloadAction<{ id: string; color: string }>) => {
+      const index = state.stickyNotes.findIndex(note => note.id === action.payload.id)
+      if (index !== -1) {
+        state.stickyNotes[index].color = action.payload.color
       }
     },
     deleteStickyNote: (state, action: PayloadAction<string>) => {
@@ -100,6 +136,8 @@ export const {
   setError,
   addStickyNote,
   updateStickyNote,
+  updateStickyNotePosition,
+  updateStickyNoteColor,
   deleteStickyNote,
   setStickyNotes,
   setItineraries,

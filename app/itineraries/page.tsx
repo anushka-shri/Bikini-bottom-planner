@@ -101,8 +101,6 @@ export default function ItinerariesPage() {
     }
   }
 
-
-
   return (
     <div className="container py-8">
       <div className="mb-8 flex justify-between items-center">
@@ -129,46 +127,46 @@ export default function ItinerariesPage() {
                 Plan your next underwater adventure
               </DialogDescription>
             </DialogHeader>
-                          <div className="grid gap-4 py-4">
+            <div className="grid gap-4 py-4">
+              <div className="space-y-1">
+                <Label htmlFor="title" className="text-sm font-medium text-gray-700">
+                  Title
+                </Label>
+                <Input
+                  id="title"
+                  value={newItinerary.title}
+                  onChange={(e) => setNewItinerary({ ...newItinerary, title: e.target.value })}
+                  className="border border-gray-300 focus:border-sponge-blue rounded-md px-3 py-2"
+                  placeholder="e.g., Bikini Bottom Adventure"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <Label htmlFor="title" className="text-sm font-medium text-gray-700">
-                    Title
+                  <Label htmlFor="location" className="text-sm font-medium text-gray-700">
+                    Location
                   </Label>
                   <Input
-                    id="title"
-                    value={newItinerary.title}
-                    onChange={(e) => setNewItinerary({ ...newItinerary, title: e.target.value })}
+                    id="location"
+                    value={newItinerary.location}
+                    onChange={(e) => setNewItinerary({ ...newItinerary, location: e.target.value })}
                     className="border border-gray-300 focus:border-sponge-blue rounded-md px-3 py-2"
-                    placeholder="e.g., Bikini Bottom Adventure"
+                    placeholder="e.g., Goo Lagoon"
                   />
                 </div>
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="space-y-1">
-                    <Label htmlFor="location" className="text-sm font-medium text-gray-700">
-                      Location
-                    </Label>
-                    <Input
-                      id="location"
-                      value={newItinerary.location}
-                      onChange={(e) => setNewItinerary({ ...newItinerary, location: e.target.value })}
-                      className="border border-gray-300 focus:border-sponge-blue rounded-md px-3 py-2"
-                      placeholder="e.g., Goo Lagoon"
-                    />
-                  </div>
-                  <div className="space-y-1">
-                    <Label htmlFor="budget" className="text-sm font-medium text-gray-700">
-                      Budget
-                    </Label>
-                    <Input
-                      id="budget"
-                      type="number"
-                      value={newItinerary.budget}
-                      onChange={(e) => setNewItinerary({ ...newItinerary, budget: e.target.value })}
-                      className="border border-gray-300 focus:border-sponge-blue rounded-md px-3 py-2"
-                      placeholder="e.g., 500"
-                    />
-                  </div>
+                <div className="space-y-1">
+                  <Label htmlFor="budget" className="text-sm font-medium text-gray-700">
+                    Budget
+                  </Label>
+                  <Input
+                    id="budget"
+                    type="number"
+                    value={newItinerary.budget}
+                    onChange={(e) => setNewItinerary({ ...newItinerary, budget: e.target.value })}
+                    className="border border-gray-300 focus:border-sponge-blue rounded-md px-3 py-2"
+                    placeholder="e.g., 500"
+                  />
                 </div>
+              </div>
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
                   <Label htmlFor="startDate" className="text-sm font-medium text-gray-700">
@@ -218,56 +216,56 @@ export default function ItinerariesPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {itineraries.map((itinerary) => (
-                      <Card key={itinerary.id} className="bg-white/80 backdrop-blur-sm border-2 border-sponge-blue hover:border-yellow-400 hover:shadow-lg transition-shadow duration-200 cursor-pointer shadow-xl rounded-2xl">
-              <CardHeader className="pb-3">
-                <div className="flex justify-between items-start">
-                  <Link href={`/planner/${itinerary.id}`} className="flex-1">
-                    <CardTitle className="text-xl font-bold text-sponge-blue">
-                      {itinerary.name}
-                    </CardTitle>
-                  </Link>
-                  <Badge 
-                    className={`${getStatusColor(itinerary.status)} cursor-pointer hover:opacity-80 transition-opacity`}
-                    onClick={(e) => {
-                      e.preventDefault()
-                      e.stopPropagation()
-                      toggleStatus(itinerary.id)
-                    }}
-                  >
-                    {getStatusText(itinerary.status)}
-                  </Badge>
-                </div>
-                  <CardDescription className="text-gray-600">
-                    {itinerary.description}
-                  </CardDescription>
-                </CardHeader>
-                <Link href={`/planner/${itinerary.id}`}>
-                  <CardContent className="pt-0">
-                    <div className="space-y-3">
-                      <div className="flex items-center text-sm text-gray-600">
-                        <MapPin className="w-4 h-4 mr-2 text-sponge-blue" />
-                        {itinerary.destination}
-                      </div>
-                      
-                      <div className="flex items-center text-sm text-gray-600">
-                        <Calendar className="w-4 h-4 mr-2 text-sponge-blue" />
-                        {formatDate(itinerary.startDate)} - {formatDate(itinerary.endDate)}
-                      </div>
-                      
-                      <div className="flex items-center text-sm text-gray-600">
-                        <DollarSign className="w-4 h-4 mr-2 text-sponge-blue" />
-                        Budget: ${itinerary.totalBudget}
-                      </div>
-                      
-                      <div className="pt-2">
-                        <div className="text-sm text-gray-500">
-                          {itinerary.plannerItems.length} item{itinerary.plannerItems.length !== 1 ? 's' : ''} planned
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
+          <Card key={itinerary.id} className="bg-white/80 backdrop-blur-sm border-2 border-sponge-blue hover:border-yellow-400 hover:shadow-lg transition-shadow duration-200 cursor-pointer shadow-xl rounded-2xl">
+            <CardHeader className="pb-3">
+              <div className="flex justify-between items-start">
+                <Link href={`/planner/${itinerary.id}`} className="flex-1">
+                  <CardTitle className="text-xl font-bold text-sponge-blue">
+                    {itinerary.name}
+                  </CardTitle>
                 </Link>
-              </Card>
+                <Badge 
+                  className={`${getStatusColor(itinerary.status)} cursor-pointer hover:opacity-80 transition-opacity`}
+                  onClick={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    toggleStatus(itinerary.id)
+                  }}
+                >
+                  {getStatusText(itinerary.status)}
+                </Badge>
+              </div>
+              <CardDescription className="text-gray-600">
+                {itinerary.description}
+              </CardDescription>
+            </CardHeader>
+            <Link href={`/planner/${itinerary.id}`}>
+              <CardContent className="pt-0">
+                <div className="space-y-3">
+                  <div className="flex items-center text-sm text-gray-600">
+                    <MapPin className="w-4 h-4 mr-2 text-sponge-blue" />
+                    {itinerary.destination}
+                  </div>
+                  
+                  <div className="flex items-center text-sm text-gray-600">
+                    <Calendar className="w-4 h-4 mr-2 text-sponge-blue" />
+                    {formatDate(itinerary.startDate)} - {formatDate(itinerary.endDate)}
+                  </div>
+                  
+                  <div className="flex items-center text-sm text-gray-600">
+                    <DollarSign className="w-4 h-4 mr-2 text-sponge-blue" />
+                    Budget: ${itinerary.totalBudget}
+                  </div>
+                  
+                  <div className="pt-2">
+                    <div className="text-sm text-gray-500">
+                      {itinerary.plannerItems.length} item{itinerary.plannerItems.length !== 1 ? 's' : ''} planned
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Link>
+          </Card>
         ))}
       </div>
 

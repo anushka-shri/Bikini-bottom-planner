@@ -36,4 +36,7 @@ export interface ItinerariesData {
 export interface StickyNote {
   id: string
   text: string
+  position?: { x: number; y: number }
+  zIndex?: number
+  color?: string
 } 
